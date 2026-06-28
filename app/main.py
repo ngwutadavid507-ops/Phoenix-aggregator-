@@ -440,7 +440,7 @@ async def aggregate_coins_data():
 
 
     results = await asyncio.gather(*tasks, return_exceptions=True)
-    exchange_results = await asyncio.gather(*exchange_tasks, return_exceptions=True)
+    # exchange_results = await asyncio.gather(*exchange_tasks, return_exceptions=True)
 
     cg_idx = 0
     if "coingecko" in fetchers:
