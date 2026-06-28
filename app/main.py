@@ -425,7 +425,7 @@ async def init_fetchers():
 async def aggregate_coins_data():
     tasks = []
     if "coingecko" in fetchers:
-        for page in range(1, 5): tasks.append(fetchers["coingecko"].fetch_coins_markets(page=page))
+        for page in range(1, 2): tasks.append(fetchers["coingecko"].fetch_coins_markets(page=page))
     if "coinpaprika" in fetchers: tasks.append(fetchers["coinpaprika"].fetch_coinpaprika_tickers())
     if "cryptocompare" in fetchers: tasks.append(fetchers["cryptocompare"].fetch_cryptocompare_top(limit=100))
     if tasks:
