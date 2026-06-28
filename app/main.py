@@ -428,11 +428,16 @@ async def aggregate_coins_data():
         for page in range(1, 5): tasks.append(fetchers["coingecko"].fetch_coins_markets(page=page))
     if "coinpaprika" in fetchers: tasks.append(fetchers["coinpaprika"].fetch_coinpaprika_tickers())
     if "cryptocompare" in fetchers: tasks.append(fetchers["cryptocompare"].fetch_cryptocompare_top(limit=100))
-    if "coinmarketcap_keyless" in fetchers: tasks.append(fetchers["coinmarketcap_keyless"].fetch_coinmarketcap_listings())
+    if tasks:
+        await asyncio.gather(*tasks, return_exceptions=True)
 
-    exchange_tasks = []
     for ex in ["binance", "bybit", "okx", "kraken", "kucoin", "gateio", "mexc", "bitget", "bingx"]:
-        if ex in fetchers: exchange_tasks.append(pass  # Handled via loop definitions)
+        if ex in fetchers:
+            try:
+                if hasattr(fetchers[ex], "fetch_exchange_tickers"): await fetchers[ex].fetch_exchange_tickers()
+                elif hasattr(fetchers[ex], "fetch_tickers"): await fetchers[ex].fetch_tickers()
+            except Exception as e: print(f"[BG] Error {ex}: {e}")
+
 
     results = await asyncio.gather(*tasks, return_exceptions=True)
     exchange_results = await asyncio.gather(*exchange_tasks, return_exceptions=True)
