@@ -432,7 +432,7 @@ async def aggregate_coins_data():
 
     exchange_tasks = []
     for ex in ["binance", "bybit", "okx", "kraken", "kucoin", "gateio", "mexc", "bitget", "bingx"]:
-        if ex in fetchers: exchange_tasks.append(fetchers[ex].fetch_tickers())
+        if ex in fetchers: exchange_tasks.append(pass  # Handled via loop definitions)
 
     results = await asyncio.gather(*tasks, return_exceptions=True)
     exchange_results = await asyncio.gather(*exchange_tasks, return_exceptions=True)
